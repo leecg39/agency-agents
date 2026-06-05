@@ -591,17 +591,17 @@ screen_review() {
     buf+="   ${C_BOLD}Tools${C_RESET} ${C_DIM}(${#tools[@]})${C_RESET}"$'\n'
     buf+="$(grid_2col 16 ${tools[@]+"${tools[@]}"})"$'\n'
     buf+="   ${C_BOLD}Teams${C_RESET} ${C_DIM}(${#teams[@]})${C_RESET}"$'\n'
-    buf+="$(grid_2col 20 ${teams[@]+"${teams[@]}"})"$'\n'
+    buf+="$(grid_2col 20 ${teams[@]+"${teams[@]}"})"$'\n\n'
     local m; $USE_LINK && m="symlink" || m="copy"
     if (( cur==1 )); then buf+="   ${C_CYAN}${GLYPH_CUR}${C_RESET} Mode: ${C_BOLD}${m}${C_RESET}  ${C_DIM}(space toggles copy/symlink)${C_RESET}"$'\n'
     else buf+="     Mode: ${m}  ${C_DIM}(space toggles copy/symlink)${C_RESET}"$'\n'; fi
+    buf+=$'\n'
+    if (( cur==0 )); then buf+="   ${C_CYAN}${GLYPH_CUR}${C_RESET} ${C_BOLD}${C_GREEN}Install${C_RESET}      ← back   q quit"$'\n'
+    else buf+="     ${C_GREEN}Install${C_RESET}      ← back   q quit"$'\n'; fi
     local cap; cap="$(tool_cap opencode)"
     if printf '%s\n' "${tools[@]}" | grep -qx "OpenCode" && [[ "$agents" -gt "$cap" ]]; then
       buf+=$'\n'"   ${C_YELLOW}⚠ OpenCode registers ~${cap}; ~$(( agents - cap )) of ${agents} won't load (#27988)${C_RESET}"$'\n'
     fi
-    buf+=$'\n'
-    if (( cur==0 )); then buf+="   ${C_CYAN}${GLYPH_CUR}${C_RESET} ${C_BOLD}${C_GREEN}Install${C_RESET}      ← back   q quit"$'\n'
-    else buf+="     ${C_GREEN}Install${C_RESET}      ← back   q quit"$'\n'; fi
     draw_frame "$buf"
     local key; key="$(read_key)"
     case "$key" in
